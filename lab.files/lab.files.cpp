@@ -2,8 +2,10 @@
 #include<string.h>
 #include<fstream>
 #include<ctime>
-std::ofstream out;
+std::ofstream fout;
+
 using namespace std;
+
 struct name {
 	char F[56];
 	char I[32];
@@ -22,7 +24,7 @@ struct name {
 		cin.getline(O, 32);
 	}
 	void showFullname() {
-		out << "FIO: " << F << " " << I << " " << O << endl;
+		fout << "FIO: " << F << " " << I << " " << O << endl;
 	}
 };
 struct adress {
@@ -76,13 +78,13 @@ struct adress {
 		}
 	}
 	void showFulladress() {
-		cout << "Index:" << index << endl;
-		cout << "Country:" << country << endl;
-		cout << "Region:" << region << endl;
-		cout << "District:" << district << endl;
-		cout << "City:" << city << endl;
-		cout << "House:" << house << endl;
-		cout << "Apartment:" << apartment << endl;
+		fout << "Index:" << index << endl;
+		fout << "Country:" << country << endl;
+		fout << "Region:" << region << endl;
+		fout << "District:" << district << endl;
+		fout << "City:" << city << endl;
+		fout << "House:" << house << endl;
+		fout << "Apartment:" << apartment << endl;
 	}
 };
 struct owner {
@@ -129,17 +131,15 @@ struct owner {
 	void outFullInfo() {
 		person.showFullname();
 
-		out << "Telephon number:" << tele << endl;
+		fout << "Telephon number:" << tele << endl;
 
 		home.showFulladress();
 
-		out << "Car brand:" << CarBrand << endl;
-		out << "Car number:" << NumCar << endl;
-		out << "Teh. passport number:" << NumTeh << endl << endl;
+		fout << "Car brand:" << CarBrand << endl;
+		fout << "Car number:" << NumCar << endl;
+		fout << "Teh. passport number:" << NumTeh << endl << endl;
 	}
 };
-
-
 void InitOfArray(owner* array, int* size)
 {
 	for (size_t i = 0; i < *size; i++)
@@ -165,20 +165,41 @@ void showVazOwner(owner* array, int* size) {
 		}
 	}
 }
+void firstlvl() 
+{
+
+	fout.open("D:\\Vaz owners.txt"); // окрываем файл для записи
+	int size;
+	int number;
+	int YesOrNot = 0;
+	cout << "Enter size of array" << endl;
+	while (!(cin >> size))
+	{
+		cout << "Wrong input" << endl;
+		cin.clear();
+		cin.ignore(65535, '\n');
+	}
+	int* ptrsize = &size;
+	owner* array = new owner[size];
+
+	InitOfArray(array, ptrsize);
+
+	fout << "Vaz owners: " << endl;
+	showVazOwner(array, ptrsize);
+}
+
 void secondlvl() 
 {
-	ofstream fout;
 	fout.open("D:\\Numbers.txt");
-
 	double* num = new double[10];
 	for (int i = 0; i < 10; i++)
 	{
 		double n = rand() % 100 - 50;
 		if (n / 2 == 0) {
-			num[i] = 1.0 + (double)(n / 100);
+			num[i] = 1.0 + (double)(n / 10);
 		}
 		else {
-			num[i] = (double)(n / 100);
+			num[i] = (double)(n / 10);
 		}
 		fout << num[i] << "\t";
 	}
@@ -198,24 +219,6 @@ void secondlvl()
 int main()
 {
 	srand(time(0));
-	std::ofstream out;          // поток для записи
-	//out.open("D:\\hello.txt"); // окрываем файл для записи
-	//int size;
-	//int number;
-	//int YesOrNot = 0;
-	//cout << "Enter size of array" << endl;
-	//while (!(cin >> size))
-	//{
-	//	cout << "Wrong input" << endl;
-	//	cin.clear();
-	//	cin.ignore(65535, '\n');
-	//}
-	//int* ptrsize = &size;
-	//owner* array = new owner[size];
-
-	//InitOfArray(array, ptrsize);
-
-	//out << "Vaz owners: " << endl;
-	//showVazOwner(array, ptrsize);
+	//firstlvl();
 	secondlvl();
 }

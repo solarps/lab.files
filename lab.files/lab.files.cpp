@@ -1,9 +1,10 @@
 ﻿#include<iostream>
-#include<string.h>
 #include<fstream>
 #include<ctime>
+#include<string>
+#include<sstream>
 std::ofstream fout;
-
+std::ifstream fin;
 using namespace std;
 
 struct name {
@@ -156,7 +157,8 @@ void showArray(owner* array, int* size)
 	}
 }
 
-void showVazOwner(owner* array, int* size) {
+void showVazOwner(owner* array, int* size) 
+{
 	for (int i = 0; i < *size; i++)
 	{
 		if (_strcmpi((array + i)->CarBrand, "Vaz") == 0)
@@ -165,6 +167,7 @@ void showVazOwner(owner* array, int* size) {
 		}
 	}
 }
+
 void firstlvl() 
 {
 
@@ -216,9 +219,156 @@ void secondlvl()
 	fout << "Сomposition : " << proiz << endl;
 	fout.close();
 }
+int k = 2 + rand() % 5;
+int m = 1 + rand() % 5;
+int n = 1 + rand() % 5;
+void randMatrix()
+{
+	fout.open("D:\\Matrix.csv");
+	for (int i = 0; i < k; i++)
+	{
+		fout << "Matrix: " << i + 1 << endl;
+		for (int i = 0; i < m; i++)
+		{
+			for (int j = 0; j < n; j++)
+			{
+				fout << rand() % 10 << ",";
+			}
+			fout << endl;
+		}
+	}
+	fout.close();
+}
+
+
+void thirdlvl() 
+{
+	string line;
+	int counterx=0;
+	int countery = 0;
+	fin.open("D:\\Matrix.csv");
+	getline(fin, line); 
+
+
+	int rows = 0;
+	int cols = 0;
+	if (fin.is_open())
+	{
+		
+		while (getline(fin, line))
+		{
+			counterx = 0;
+			if (isdigit(line[0])) 
+			{
+				for ( int i = 0; i < strlen(&line[0]); i++)
+				{
+					
+					if (line[i] == ',')
+					{
+						counterx++;
+					}
+				}
+				cols = 0;
+				rows++;
+				countery++;
+			}else countery = 0;
+			/*cout << counterx << endl;
+			cout << countery << endl;*/
+			//cout << endl;
+		}
+	}
+	fin.close();
+	fin.open("D:\\Matrix.csv");
+	int i=0;
+	int*** arr = new int** [k];
+	for (int i = 0; i < k; i++)
+	{
+		arr[i] = new int* [countery];
+		for (int j = 0; j < countery; j++)
+		{
+			arr[i][j] = new int[counterx];
+		}
+	}
+	for (int matrix = 0; matrix < k; matrix++)
+	{
+		cout << "Matrix" << matrix + 1 << endl;
+		for (int rows = 0; rows < countery; rows++)
+		{
+			do
+			{
+				getline(fin, line);
+			} while (!isdigit(line[0]));
+			i = 0;
+			for (int cols = 0; cols < counterx; cols++)
+			{
+				if (isdigit(line[i]))
+				{
+					arr[matrix][rows][cols] =(int)(line[i]-'0');
+				}
+				i += 2;
+				cout << arr[matrix][rows][cols]<<"\t";
+			}
+			cout << endl;
+		}
+	}
+	int* sum = new int[k];
+	for (int i = 0; i < k; i++)
+	{
+		sum[i] = 0;
+	}
+	for (int matrix = 0; matrix < k; matrix++)
+	{
+		for (int rows = 0; rows < countery; rows++)
+		{
+			for (int cols = 0; cols < counterx; cols++)
+			{
+				if (arr[matrix][rows][cols] % 2 == 0) {
+					sum[matrix] += arr[matrix][rows][cols];
+				}
+			}
+		}
+	}
+	fin.close();
+	fout.open("D:\\EditedMatrix.csv");
+	for (int matrix = 0; matrix < k; matrix++)
+	{
+		if (sum[matrix] % 2 == 0)
+		{
+			fout << "Matrix:" << matrix + 1 << endl;
+			for (int rows = 0; rows < countery; rows++)
+			{
+				for (int cols = 0; cols < counterx; cols++)
+				{
+					fout << arr[matrix][rows][cols] << ",";
+				}
+				fout << endl;
+			}
+		}
+	}
+	fout.close();
+	fout.open("D:\\Matrix.csv");
+	for (int matrix = 0; matrix < k; matrix++)
+	{
+		if (sum[matrix] % 2 == 0) 
+		{
+			fout << "Matrix:" << matrix + 1 << endl;
+			for (int rows = 0; rows < countery; rows++)
+			{
+				for (int cols = 0; cols < counterx; cols++)
+				{
+					fout << "1,";
+				}
+				fout << endl;
+			}
+		}
+	}
+	fout.close();
+}
 int main()
 {
 	srand(time(0));
 	//firstlvl();
-	secondlvl();
+	//secondlvl();
+	randMatrix();
+	thirdlvl();
 }
